@@ -5,17 +5,15 @@ using Savorboard.CAP.InMemoryMessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var lazyDataSource = new Lazy<NpgsqlDataSource>(() =>
-{
-    var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("PostgresConnection"));
-    return dataSourceBuilder.Build();
-});
+
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("PostgresConnection"));
+
 builder.Services.AddDbContextFactory<CapDbContext>(config => config
-    .UseNpgsql(lazyDataSource.Value, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+    .UseNpgsql(dataSourceBuilder.Build()));
 
 builder.Services.AddCap(options =>
 {
-    //Breaks everything as we are not using connection string
+    //Breaks everything as we are not using connection string without "Persist Security Info = true")
     options.UseEntityFramework<CapDbContext>();
 
     // Will work as we pass connection string straight on
@@ -26,4 +24,5 @@ builder.Services.AddCap(options =>
 
 var app = builder.Build();
 
-app.Run();
+
+await app.RunAsync(new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
