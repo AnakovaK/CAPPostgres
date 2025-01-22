@@ -22,7 +22,7 @@ jobs:
     - name: Run project
       run: cd CAPPostgres && dotnet run --ConnectionStrings:PostgresConnection "User ID=postgres;Password=admin;Server=127.0.0.1;Port=5432;Database=cap_db;Persist Security Info=true"
 
-works correct with efcore using connection string with insecure parameter:
+  works correct with efcore using connection string with insecure parameter:
 
     runs-on: ubuntu-latest
 
