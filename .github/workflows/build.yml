@@ -20,7 +20,7 @@ jobs:
     - name: Run db
       run: docker compose up -d
     - name: Run project
-      run: cd CAPPostgres && dotnet run --ConnectionStrings:PostgresConnection "User ID=postgres;Password=admin;Server=127.0.0.1;Port=5432;Database=cap_db;Persist Security Info=true"
+      run: cd CAPPostgres && dotnet run --ConnectionStrings:PostgresConnection "User ID=postgres;Password=admin;Server=127.0.0.1;Port=5432;Database=cap_db;"
 
   works_correct_with_efcore_using_connection_string_with_insecure_parameter:
 
